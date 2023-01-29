@@ -13,6 +13,8 @@ import org.yeastrc.limelight.xml.conga.objects.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.Map;
 
 public class XMLBuilder {
@@ -250,15 +252,15 @@ public class XMLBuilder {
 		
 		
 		// add in the config file(s)
-//		ConfigurationFiles xmlConfigurationFiles = new ConfigurationFiles();
-//		limelightInputRoot.setConfigurationFiles( xmlConfigurationFiles );
-//
-//		ConfigurationFile xmlConfigurationFile = new ConfigurationFile();
-//		xmlConfigurationFiles.getConfigurationFile().add( xmlConfigurationFile );
-//
-//		xmlConfigurationFile.setSearchProgram( searchProgramName );
-//		xmlConfigurationFile.setFileName( conversionParameters.getParamsFile().getName() );
-//		xmlConfigurationFile.setFileContent( Files.readAllBytes( FileSystems.getDefault().getPath( conversionParameters.getParamsFile().getAbsolutePath() ) ) );
+		ConfigurationFiles xmlConfigurationFiles = new ConfigurationFiles();
+		limelightInputRoot.setConfigurationFiles( xmlConfigurationFiles );
+
+		ConfigurationFile xmlConfigurationFile = new ConfigurationFile();
+		xmlConfigurationFiles.getConfigurationFile().add( xmlConfigurationFile );
+
+		xmlConfigurationFile.setSearchProgram( Constants.PROGRAM_NAME_CONGA );
+		xmlConfigurationFile.setFileName( conversionParameters.getLogFile().getName() );
+		xmlConfigurationFile.setFileContent( Files.readAllBytes( FileSystems.getDefault().getPath( conversionParameters.getLogFile().getAbsolutePath() ) ) );
 
 		//make the xml file
 		CreateImportFileFromJavaObjectsMain.getInstance().createImportFileFromJavaObjectsMain( conversionParameters.getLimelightXMLOutputFile(), limelightInputRoot);
