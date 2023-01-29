@@ -49,8 +49,11 @@ public class MainProgram implements Runnable {
 	@CommandLine.Option(names = { "-f", "--fasta-file" }, required = true, description = "Full path to FASTA file used in the experiment. E.g., /data/yeast.fa")
 	private File fastaFile;
 
-	@CommandLine.Option(names = { "-t", "--conga-targets" }, required = true, description = "Full path to the CONGA targets file (results) E.g., /data/results/file_root.target.txt.")
+	@CommandLine.Option(names = { "-t", "--conga-targets" }, required = true, description = "Full path to the CONGA targets file (results) E.g., /data/results/conga.target.txt.")
 	private File targetsFile;
+
+	@CommandLine.Option(names = { "-l", "--conga-log" }, required = true, description = "Full path to the CONGA log file E.g., /data/results/conga.log.txt")
+	private File logFile;
 
 	@CommandLine.Option(names = { "-o", "--out-file" }, required = true, description = "Full path to use for the Limelight XML output file. E.g., /data/my_analysis/crux.limelight.xml")
 	private File outFile;
@@ -63,6 +66,11 @@ public class MainProgram implements Runnable {
 	public void run() {
 
 		printRuntimeInfo();
+
+		if( !logFile.exists() ) {
+			System.err.println( "Could not find log file: " + logFile.getAbsolutePath() );
+			System.exit( 1 );
+		}
 
 		if( !targetsFile.exists() ) {
 			System.err.println( "Could not find targets file: " + targetsFile.getAbsolutePath() );
@@ -80,6 +88,7 @@ public class MainProgram implements Runnable {
 		cp.setConversionProgramInfo( cpi );
 		cp.setFastaFile( fastaFile );
 		cp.setTargetsFile( targetsFile );
+		cp.setLogFile(logFile);
 		cp.setLimelightXMLOutputFile( outFile );
 
 		try {

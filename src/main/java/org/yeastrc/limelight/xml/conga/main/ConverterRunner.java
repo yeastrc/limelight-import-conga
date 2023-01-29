@@ -21,7 +21,13 @@ package org.yeastrc.limelight.xml.conga.main;
 import org.yeastrc.limelight.xml.conga.builder.XMLBuilder;
 import org.yeastrc.limelight.xml.conga.objects.CongaResults;
 import org.yeastrc.limelight.xml.conga.objects.ConversionParameters;
+import org.yeastrc.limelight.xml.conga.objects.LogFileData;
+import org.yeastrc.limelight.xml.conga.reader.LogFileParser;
 import org.yeastrc.limelight.xml.conga.reader.ResultsParser;
+import org.yeastrc.limelight.xml.conga.utils.ModParsingUtils;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 public class ConverterRunner {
 
@@ -31,12 +37,17 @@ public class ConverterRunner {
 	
 	public void convertCongaTSVToLimelightXML(ConversionParameters conversionParameters ) throws Throwable {
 
+		System.err.print( "Reading log file (" + conversionParameters.getTargetsFile().getName() + ")..." );
+		LogFileData logFileData = LogFileParser.parseLogFile(conversionParameters.getLogFile());
+		Map<String, BigDecimal> staticMods = ModParsingUtils.getStaticMods(logFileData.getStaticModsString());
+		System.err.println( " Done." );
+
 		System.err.print( "Reading search results (" + conversionParameters.getTargetsFile().getName() + ") into memory..." );
-		CongaResults congaResults = ResultsParser.getResults(conversionParameters.getTargetsFile());
+		CongaResults congaResults = ResultsParser.getResults(conversionParameters.getTargetsFile(), staticMods);
 		System.err.println( " Done." );
 
 		System.err.print( "Writing out XML..." );
-		(new XMLBuilder()).buildAndSaveXML( conversionParameters, congaResults );
+		(new XMLBuilder()).buildAndSaveXML( conversionParameters, logFileData, staticMods, congaResults );
 		System.err.println( " Done." );
 
 		System.err.print( "Validating Limelight XML..." );

@@ -8,18 +8,18 @@ import org.yeastrc.limelight.xml.conga.annotation.PSMAnnotationTypeSortOrder;
 import org.yeastrc.limelight.xml.conga.annotation.PSMAnnotationTypes;
 import org.yeastrc.limelight.xml.conga.annotation.PSMDefaultVisibleAnnotationTypes;
 import org.yeastrc.limelight.xml.conga.constants.Constants;
-import org.yeastrc.limelight.xml.conga.objects.CongaPSM;
-import org.yeastrc.limelight.xml.conga.objects.CongaReportedPeptide;
-import org.yeastrc.limelight.xml.conga.objects.CongaResults;
-import org.yeastrc.limelight.xml.conga.objects.ConversionParameters;
+import org.yeastrc.limelight.xml.conga.objects.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Map;
 
 public class XMLBuilder {
 
 	public void buildAndSaveXML( ConversionParameters conversionParameters,
+								 LogFileData logFileData,
+								 Map<String, BigDecimal> staticMods,
 			                     CongaResults congaResults)
     throws Exception {
 
@@ -42,7 +42,7 @@ public class XMLBuilder {
 
 			searchProgram.setName( Constants.PROGRAM_NAME_CONGA);
 			searchProgram.setDisplayName( Constants.PROGRAM_NAME_CONGA );
-			searchProgram.setVersion( "Unknown" );
+			searchProgram.setVersion(logFileData.getVersion() );
 
 			//
 			// Define the annotation types present in magnum data
@@ -95,16 +95,17 @@ public class XMLBuilder {
 		//
 		// Define the static mods
 		//
-		{
+		if(staticMods.size() > 0) {
+
 			StaticModifications smods = new StaticModifications();
 			limelightInputRoot.setStaticModifications( smods );
 
-			// CONGA always assumes this mod on C, for now this is the only static mod supported
-			StaticModification xmlSmod = new StaticModification();
-			xmlSmod.setAminoAcid( "C" );
-			xmlSmod.setMassChange(new BigDecimal("57.02146"));
-			smods.getStaticModification().add( xmlSmod );
-
+			for(String residue : staticMods.keySet()) {
+				StaticModification xmlSmod = new StaticModification();
+				xmlSmod.setAminoAcid(residue);
+				xmlSmod.setMassChange(staticMods.get(residue));
+				smods.getStaticModification().add(xmlSmod);
+			}
 		}
 
 		//

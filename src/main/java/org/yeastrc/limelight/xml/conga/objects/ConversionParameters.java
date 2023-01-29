@@ -54,8 +54,17 @@ public class ConversionParameters {
 		this.targetsFile = targetsFile;
 	}
 
+	public File getLogFile() {
+		return logFile;
+	}
+
+	public void setLogFile(File logFile) {
+		this.logFile = logFile;
+	}
+
 	private File fastaFile;
 	private File limelightXMLOutputFile;
 	private ConversionProgramInfo conversionProgramInfo;
 	private File targetsFile;
+	private File logFile;
 }
