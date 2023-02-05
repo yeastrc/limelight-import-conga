@@ -161,7 +161,6 @@ public class MatchedProteinsBuilder {
 
 					String peptideSearchSequence = nakedPeptideObject.getSearchSequence();
 
-
 					if( fastaSequence.contains( peptideSearchSequence ) ) {
 
 						// this protein has a matching peptide
@@ -169,14 +168,20 @@ public class MatchedProteinsBuilder {
 						if( !foundPeptideForFASTAEntry ) {
 							for( FASTAHeader header : entry.getHeaders() ) {
 
-								if( !proteinAnnotations.containsKey( entry.getSequence() ) )
-									proteinAnnotations.put( entry.getSequence(), new HashSet<FastaProteinAnnotation>() );
+								// strip trailing asterisk from protein sequence
+								String entrySequence = entry.getSequence();
+								if(entrySequence.endsWith("*")) {
+									entrySequence = entrySequence.substring(0, entrySequence.length() - 1);
+								}
+
+								if( !proteinAnnotations.containsKey( entrySequence ) )
+									proteinAnnotations.put( entrySequence, new HashSet<>() );
 
 								FastaProteinAnnotation anno = new FastaProteinAnnotation();
 								anno.setName( header.getName() );
 								anno.setDescription( header.getDescription() );
 
-								proteinAnnotations.get( entry.getSequence() ).add( anno );
+								proteinAnnotations.get( entrySequence ).add( anno );
 
 							}//end iterating over fasta headers
 
