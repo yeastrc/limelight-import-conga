@@ -169,6 +169,9 @@ public class XMLBuilder {
 
 				xmlPsm.setScanNumber( new BigInteger( String.valueOf( scanNumber ) ) );
 				xmlPsm.setPrecursorCharge( new BigInteger( String.valueOf( psm.getCharge() ) ) );
+				if(psm.getScan_filename() != null) {
+					xmlPsm.setScanFileName(psm.getScan_filename());
+				}
 				//xmlPsm.setPrecursorMZ(MassUtils.getMoverZ(psm));
 
 				// add in the filterable PSM annotations (e.g., score)

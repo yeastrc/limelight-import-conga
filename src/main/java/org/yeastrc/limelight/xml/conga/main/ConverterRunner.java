@@ -37,7 +37,7 @@ public class ConverterRunner {
 	
 	public void convertCongaTSVToLimelightXML(ConversionParameters conversionParameters ) throws Throwable {
 
-		System.err.print( "Reading log file (" + conversionParameters.getTargetsFile().getName() + ")..." );
+		System.err.print( "Reading log file (" + conversionParameters.getLogFile().getName() + ")..." );
 		LogFileData logFileData = LogFileParser.parseLogFile(conversionParameters.getLogFile());
 		Map<String, BigDecimal> staticMods = ModParsingUtils.getStaticMods(logFileData.getStaticModsString());
 		System.err.println( " Done." );

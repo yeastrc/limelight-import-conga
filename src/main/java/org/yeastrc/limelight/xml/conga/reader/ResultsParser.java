@@ -18,6 +18,7 @@
 
 package org.yeastrc.limelight.xml.conga.reader;
 
+import org.apache.commons.io.FilenameUtils;
 import org.yeastrc.limelight.xml.conga.objects.CongaPSM;
 import org.yeastrc.limelight.xml.conga.objects.CongaReportedPeptide;
 import org.yeastrc.limelight.xml.conga.objects.CongaResults;
@@ -120,6 +121,12 @@ public class ResultsParser {
 		final BigDecimal observedNeutralMass = new BigDecimal(fields[columnMap.get("spectrum_neutral_mass")]);
 		final String modificationInfoString = fields[columnMap.get("modification_info")];
 
+		String scan_file = null;
+		if(columnMap.containsKey("file")) {
+			scan_file = fields[columnMap.get("file")];
+			scan_file = FilenameUtils.removeExtension(scan_file);
+		}
+
 		CongaPSM psm = new CongaPSM();
 
 		psm.setScanNumber(scanNumber);
@@ -128,6 +135,7 @@ public class ResultsParser {
 		psm.setSearchFile(searchFile);
 		psm.setPeptideRank(rank);
 		psm.setObservedNeutralMass(observedNeutralMass);
+		psm.setScan_filename(scan_file);
 
 		if(searchFile.equals("narrow")) {
 			psm.setDeltaMass(deltaMass);

@@ -15,6 +15,15 @@ public class CongaPSM {
 	private String peptideSequence;
 	private Map<Integer,BigDecimal> mods;
 	private BigDecimal observedNeutralMass;
+	private String scan_filename;
+
+	public String getScan_filename() {
+		return scan_filename;
+	}
+
+	public void setScan_filename(String scan_filename) {
+		this.scan_filename = scan_filename;
+	}
 
 	public BigDecimal getObservedNeutralMass() {
 		return observedNeutralMass;
