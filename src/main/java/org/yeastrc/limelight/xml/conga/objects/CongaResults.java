@@ -1,21 +1,22 @@
 package org.yeastrc.limelight.xml.conga.objects;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class CongaResults {
 
-	private Map<CongaReportedPeptide, Map<Integer, CongaPSM>> peptidePSMMap;
+	private Map<CongaReportedPeptide, Collection<CongaPSM>> peptidePSMMap;
 
 	/**
 	 * @return the peptidePSMMap
 	 */
-	public Map<CongaReportedPeptide, Map<Integer, CongaPSM>> getPeptidePSMMap() {
+	public Map<CongaReportedPeptide, Collection<CongaPSM>> getPeptidePSMMap() {
 		return peptidePSMMap;
 	}
 	/**
 	 * @param peptidePSMMap the peptidePSMMap to set
 	 */
-	public void setPeptidePSMMap(Map<CongaReportedPeptide, Map<Integer, CongaPSM>> peptidePSMMap) {
+	public void setPeptidePSMMap(Map<CongaReportedPeptide, Collection<CongaPSM>> peptidePSMMap) {
 		this.peptidePSMMap = peptidePSMMap;
 	}
 

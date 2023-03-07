@@ -43,7 +43,7 @@ public class ResultsParser {
 	public static CongaResults getResults(File targetsFile, Map<String, BigDecimal> staticMods) throws Throwable {
 
 		CongaResults results = new CongaResults();
-		Map<CongaReportedPeptide,Map<Integer,CongaPSM>> resultMap = new HashMap<>();
+		Map<CongaReportedPeptide,Collection<CongaPSM>> resultMap = new HashMap<>();
 		results.setPeptidePSMMap(resultMap);
 
 		try(BufferedReader br = new BufferedReader(new FileReader( targetsFile ))) {
@@ -56,9 +56,9 @@ public class ResultsParser {
 				CongaReportedPeptide reportedPeptide = ReportedPeptideUtils.getReportedPeptideForPSM( psm );
 
 				if( !results.getPeptidePSMMap().containsKey( reportedPeptide ) )
-					results.getPeptidePSMMap().put( reportedPeptide, new HashMap<>() );
+					results.getPeptidePSMMap().put( reportedPeptide, new ArrayList<>() );
 
-				results.getPeptidePSMMap().get( reportedPeptide ).put( psm.getScanNumber(), psm );
+				results.getPeptidePSMMap().get( reportedPeptide ).add(psm);
 			}
 		}
 

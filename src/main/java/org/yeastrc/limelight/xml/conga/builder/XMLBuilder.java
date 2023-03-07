@@ -160,14 +160,12 @@ public class XMLBuilder {
 
 			// iterate over all PSMs for this reported peptide
 
-			for( int scanNumber : congaResults.getPeptidePSMMap().get(congaReportedPeptide).keySet() ) {
-
-				CongaPSM psm = congaResults.getPeptidePSMMap().get(congaReportedPeptide).get( scanNumber );
+			for( CongaPSM psm : congaResults.getPeptidePSMMap().get(congaReportedPeptide)) {
 
 				Psm xmlPsm = new Psm();
 				xmlPsms.getPsm().add( xmlPsm );
 
-				xmlPsm.setScanNumber( new BigInteger( String.valueOf( scanNumber ) ) );
+				xmlPsm.setScanNumber( new BigInteger( String.valueOf( psm.getScanNumber() ) ) );
 				xmlPsm.setPrecursorCharge( new BigInteger( String.valueOf( psm.getCharge() ) ) );
 				if(psm.getScan_filename() != null) {
 					xmlPsm.setScanFileName(psm.getScan_filename());
