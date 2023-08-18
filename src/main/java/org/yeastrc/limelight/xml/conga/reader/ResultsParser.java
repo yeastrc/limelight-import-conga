@@ -197,6 +197,14 @@ public class ResultsParser {
 
 		if(m.matches()) {
 			int position = Integer.parseInt(m.group(1));
+
+			// ensure we have a valid position for the mod
+			if(position > nakedPeptideSequence.length()) {
+				throw new RuntimeException("Got a mod position past the c-terminus of protein. Mod: " + reportedModString + "  Peptide: " + nakedPeptideSequence);
+			} else if(position < 0) {
+				throw new RuntimeException("Got a mod position preceding the n-terminus of protein. Mod: " + reportedModString + "  Peptide: " + nakedPeptideSequence);
+			}
+
 			Collection<BigDecimal> masses = new ArrayList<>();
 
 			// mod masses are reported comma-delimited if there are more than one on this position
