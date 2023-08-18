@@ -17,7 +17,7 @@ This converter can be run in one of two ways: 1) As a Java program or 2) as a Do
 ```bash
 java -jar ~/congaToLimelightXML.jar \
     -f /path/to/proteins.fasta \
-    -t ./conga.target.txt \
+    -t ./conga.target_mods.txt \
     -l ./conga.log.txt \
     -o conga.limelight.xml
 ```
@@ -32,7 +32,7 @@ java -jar ~/congaToLimelightXML.jar \
 ```bash
 docker run --rm -it -v `pwd`:`pwd` -w `pwd` --user $(id -u):$(id -g) mriffle/conga-to-limelight:latest \
     -f ./proteins.fasta \
-    -t ./conga.target.txt \
+    -t ./conga.target_mods.txt \
     -l ./conga.log.txt \
     -o conga.limelight.xml
 ```
@@ -43,9 +43,9 @@ docker run --rm -it -v `pwd`:`pwd` -w `pwd` --user $(id -u):$(id -g) mriffle/con
   -f, --fasta-file=<fastaFile>
                              Full path to FASTA file used in the experiment. E.g.,
                                /data/yeast.fa
-  -t, --conga-targets=<targetsFile>
+  -t, --conga-target_mods=<targetsFile>
                              Full path to the CONGA targets file (results) E.g.,
-                               /data/results/conga.target.txt.
+                               /data/results/conga.target_mods.txt.
   -l, --conga-log=<logFile>  Full path to the CONGA log file E.g.,
                                /data/results/conga.log.txt
   -o, --out-file=<outFile>   Full path to use for the Limelight XML output file. E.
