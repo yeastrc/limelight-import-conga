@@ -16,6 +16,8 @@ public class CongaPSM {
 	private Map<Integer,BigDecimal> mods;
 	private BigDecimal observedNeutralMass;
 	private String scan_filename;
+	private boolean aboveGroupThreshold;
+	private boolean originallyDiscovered;
 
 	public String getScan_filename() {
 		return scan_filename;
@@ -103,5 +105,21 @@ public class CongaPSM {
 
 	public void setScanNumber(int scanNumber) {
 		this.scanNumber = scanNumber;
+	}
+
+	public boolean isAboveGroupThreshold() {
+		return aboveGroupThreshold;
+	}
+
+	public void setAboveGroupThreshold(boolean aboveGroupThreshold) {
+		this.aboveGroupThreshold = aboveGroupThreshold;
+	}
+
+	public boolean isOriginallyDiscovered() {
+		return originallyDiscovered;
+	}
+
+	public void setOriginallyDiscovered(boolean originallyDiscovered) {
+		this.originallyDiscovered = originallyDiscovered;
 	}
 }

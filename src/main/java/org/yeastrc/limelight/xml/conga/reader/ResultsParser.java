@@ -102,7 +102,9 @@ public class ResultsParser {
 				"search_file",
 				"peptide",
 				"spectrum_neutral_mass",
-				"modification_info"
+				"modification_info",
+				"originally_discovered",
+				"above_group_threshold"
 		};
 
 		for(String requiredHeader : requiredHeaders) {
@@ -120,6 +122,8 @@ public class ResultsParser {
 		final BigDecimal deltaMass = new BigDecimal(fields[columnMap.get("delta_mass")]);
 		final BigDecimal observedNeutralMass = new BigDecimal(fields[columnMap.get("spectrum_neutral_mass")]);
 		final String modificationInfoString = fields[columnMap.get("modification_info")];
+		final boolean aboveGroupThreshold = fields[columnMap.get("above_group_threshold")].equals("True");
+		final boolean originallyDiscovered = fields[columnMap.get("originally_discovered")].equals("True");
 
 		String scan_file = null;
 		if(columnMap.containsKey("file")) {
@@ -136,6 +140,8 @@ public class ResultsParser {
 		psm.setPeptideRank(rank);
 		psm.setObservedNeutralMass(observedNeutralMass);
 		psm.setScan_filename(scan_file);
+		psm.setAboveGroupThreshold(aboveGroupThreshold);
+		psm.setOriginallyDiscovered(originallyDiscovered);
 
 		if(searchFile.equals("narrow")) {
 			psm.setDeltaMass(deltaMass);

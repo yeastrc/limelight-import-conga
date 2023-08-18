@@ -206,6 +206,26 @@ public class XMLBuilder {
 					xmlFilterablePsmAnnotation.setValue( psm.getDeltaMass() );
 				}
 
+				{
+					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
+					xmlFilterablePsmAnnotations.getFilterablePsmAnnotation().add( xmlFilterablePsmAnnotation );
+
+					xmlFilterablePsmAnnotation.setAnnotationName( PSMAnnotationTypes.CONGA_ORIGINALLY_DISCOVERED );
+					xmlFilterablePsmAnnotation.setSearchProgram( Constants.PROGRAM_NAME_CONGA );
+
+					xmlFilterablePsmAnnotation.setValue( psm.isOriginallyDiscovered() ? BigDecimal.ONE : BigDecimal.ZERO );
+				}
+
+				{
+					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
+					xmlFilterablePsmAnnotations.getFilterablePsmAnnotation().add( xmlFilterablePsmAnnotation );
+
+					xmlFilterablePsmAnnotation.setAnnotationName( PSMAnnotationTypes.CONGA_ABOVE_GROUP_THRESHOLD );
+					xmlFilterablePsmAnnotation.setSearchProgram( Constants.PROGRAM_NAME_CONGA );
+
+					xmlFilterablePsmAnnotation.setValue( psm.isAboveGroupThreshold() ? BigDecimal.ONE : BigDecimal.ZERO );
+				}
+
 				// add in the descriptive PSM annotations (e.g., "open" vs/ "narrow")
 				DescriptivePsmAnnotations xmlDescriptiveAnnotations = new DescriptivePsmAnnotations();
 				xmlPsm.setDescriptivePsmAnnotations( xmlDescriptiveAnnotations );

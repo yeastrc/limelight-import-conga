@@ -14,6 +14,9 @@ public class PSMAnnotationTypes {
 	public static final String CONGA_DELTA_MASS = "Delta Mass";
 	public static final String CONGA_PEPTIDE_RANK = "Peptide Rank";
 	public static final String CONGA_SEARCH_FILE = "Search File";
+	public static final String CONGA_ORIGINALLY_DISCOVERED = "Originally Discovered";
+	public static final String CONGA_ABOVE_GROUP_THRESHOLD = "Above Group Threshold";
+
 
 	public static List<FilterablePsmAnnotationType> getFilterablePsmAnnotationTypes() {
 		List<FilterablePsmAnnotationType> types = new ArrayList<FilterablePsmAnnotationType>();
@@ -41,6 +44,24 @@ public class PSMAnnotationTypes {
 			type.setName( CONGA_PEPTIDE_RANK );
 			type.setDescription( "The rank reported by CONGA" );
 			type.setFilterDirection( FilterDirectionType.BELOW );
+
+			types.add( type );
+		}
+
+		{
+			FilterablePsmAnnotationType type = new FilterablePsmAnnotationType();
+			type.setName( CONGA_ORIGINALLY_DISCOVERED );
+			type.setDescription( "This column indicates whether the reported row was originally discovered by CONGA. See: https://open-groupwalk.readthedocs.io/en/latest/pages/output_files.html" );
+			type.setFilterDirection( FilterDirectionType.ABOVE );
+
+			types.add( type );
+		}
+
+		{
+			FilterablePsmAnnotationType type = new FilterablePsmAnnotationType();
+			type.setName( CONGA_ABOVE_GROUP_THRESHOLD );
+			type.setDescription( "This column indicates whether the reported peptide exceeds the corresponding group threshold that it belongs to. See: https://open-groupwalk.readthedocs.io/en/latest/pages/output_files.html" );
+			type.setFilterDirection( FilterDirectionType.ABOVE );
 
 			types.add( type );
 		}

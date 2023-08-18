@@ -49,7 +49,7 @@ public class MainProgram implements Runnable {
 	@CommandLine.Option(names = { "-f", "--fasta-file" }, required = true, description = "Full path to FASTA file used in the experiment. E.g., /data/yeast.fa")
 	private File fastaFile;
 
-	@CommandLine.Option(names = { "-t", "--conga-targets" }, required = true, description = "Full path to the CONGA targets file (results) E.g., /data/results/conga.target.txt.")
+	@CommandLine.Option(names = { "-t", "--conga-target_mods" }, required = true, description = "Full path to the CONGA \".target_mods.txt\" file (results) E.g., /data/results/conga.target_mods.txt.")
 	private File targetsFile;
 
 	@CommandLine.Option(names = { "-l", "--conga-log" }, required = true, description = "Full path to the CONGA log file E.g., /data/results/conga.log.txt")
