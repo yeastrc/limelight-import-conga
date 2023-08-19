@@ -4,6 +4,7 @@ import org.yeastrc.limelight.limelight_import.api.xml_dto.DescriptivePsmAnnotati
 import org.yeastrc.limelight.limelight_import.api.xml_dto.FilterDirectionType;
 import org.yeastrc.limelight.limelight_import.api.xml_dto.FilterablePsmAnnotationType;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class PSMAnnotationTypes {
 			type.setName( CONGA_ABOVE_GROUP_THRESHOLD );
 			type.setDescription( "This column indicates whether the reported peptide exceeds the corresponding group threshold that it belongs to. See: https://open-groupwalk.readthedocs.io/en/latest/pages/output_files.html" );
 			type.setFilterDirection( FilterDirectionType.ABOVE );
+			type.setDefaultFilterValue(BigDecimal.ONE);
 
 			types.add( type );
 		}
