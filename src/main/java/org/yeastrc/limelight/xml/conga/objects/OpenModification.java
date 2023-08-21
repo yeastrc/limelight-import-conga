@@ -7,40 +7,39 @@ import java.util.Objects;
 public class OpenModification {
 
     private BigDecimal mass;
-    private Collection<Integer> positions;
+    private Integer position;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OpenModification that = (OpenModification) o;
-        return mass.equals(that.mass) &&
-                Objects.equals(positions, that.positions);
+        return mass.equals(that.mass) && Objects.equals(position, that.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mass, positions);
+        return Objects.hash(mass, position);
     }
 
     @Override
     public String toString() {
         return "OpenModification{" +
                 "mass=" + mass +
-                ", positions=" + positions +
+                ", position=" + position +
                 '}';
-    }
-
-    public OpenModification(BigDecimal mass, Collection<Integer> positions) {
-        this.mass = mass;
-        this.positions = positions;
     }
 
     public BigDecimal getMass() {
         return mass;
     }
 
-    public Collection<Integer> getPositions() {
-        return positions;
+    public Integer getPosition() {
+        return position;
+    }
+
+    public OpenModification(BigDecimal mass, Integer position) {
+        this.mass = mass;
+        this.position = position;
     }
 }

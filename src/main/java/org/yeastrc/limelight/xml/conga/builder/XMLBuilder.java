@@ -247,12 +247,10 @@ public class XMLBuilder {
 					xmlPsmOpenMod.setMass(psm.getOpenModification().getMass());
 					xmlPsm.setPsmOpenModification(xmlPsmOpenMod);
 
-					if(psm.getOpenModification().getPositions() != null && psm.getOpenModification().getPositions().size() > 0) {
-						for(int position : psm.getOpenModification().getPositions()) {
-							PsmOpenModificationPosition xmlPsmOpenModPosition = new PsmOpenModificationPosition();
-							xmlPsmOpenModPosition.setPosition(BigInteger.valueOf(position));
-							xmlPsmOpenMod.getPsmOpenModificationPosition().add(xmlPsmOpenModPosition);
-						}
+					if(psm.getOpenModification().getPosition() != null) {
+						PsmOpenModificationPosition xmlPsmOpenModPosition = new PsmOpenModificationPosition();
+						xmlPsmOpenModPosition.setPosition(BigInteger.valueOf(psm.getOpenModification().getPosition()));
+						xmlPsmOpenMod.getPsmOpenModificationPosition().add(xmlPsmOpenModPosition);
 					}
 				}
 				
@@ -260,9 +258,6 @@ public class XMLBuilder {
 			}// end iterating over psms for a reported peptide
 		
 		}//end iterating over reported peptides
-
-
-		
 		
 		// add in the matched proteins section
 		MatchedProteinsBuilder.getInstance().buildMatchedProteins(

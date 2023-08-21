@@ -143,22 +143,101 @@ public class ResultsParser {
 		psm.setAboveGroupThreshold(aboveGroupThreshold);
 		psm.setOriginallyDiscovered(originallyDiscovered);
 
-		if(searchFile.equals("narrow")) {
-			psm.setDeltaMass(deltaMass);
-		} else if(searchFile.equals("open")) {
-			psm.setOpenModification( new OpenModification(deltaMass, new HashSet<>()));
-			psm.setDeltaMass(BigDecimal.ZERO);
-		} else {
-			throw new RuntimeException("\"search_file\" must be \"narrow\" or \"open\"");
-		}
+		String nakedPeptideSequence = getPeptideSequenceFromReportedPeptideString(reportedPeptideString);
+
+		assignOpenModAndDeltaMassToPSM(psm, nakedPeptideSequence, deltaMass, searchFile, fields, columnMap);
 
 		// handle peptide string
-		psm.setPeptideSequence(getPeptideSequenceFromReportedPeptideString(reportedPeptideString));
+		psm.setPeptideSequence(nakedPeptideSequence);
 
 		// handle var mods
 		psm.setMods(getVariableModsFromReportedMods(modificationInfoString, psm.getPeptideSequence(), staticMods));
 
 		return psm;
+	}
+
+	/**
+	 * Perform in-place modification of the supplied PSM: set deltaMass and open modification
+	 *
+	 * @param psm
+	 * @param deltaMass
+	 * @param searchFile
+	 * @param fields
+	 * @param columnMap
+	 */
+	private static void assignOpenModAndDeltaMassToPSM(
+			CongaPSM psm,
+			String nakedPeptideSequence,
+			BigDecimal deltaMass,
+			String searchFile,
+			String fields[],
+			Map<String, Integer> columnMap
+	) {
+
+		if(searchFile.equals("narrow")) {
+			psm.setDeltaMass(deltaMass);
+
+		} else if(searchFile.equals("open")) {
+
+			if(columnMap.containsKey("open_mod_localization")) {
+
+				// aScore localization was performed
+
+				// ensure all required columns are present
+				final String[] requiredHeaders = new String[] {
+						"open_mod_localization",
+						"dm_used",
+						"localized_better",
+				};
+
+				for(String requiredHeader : requiredHeaders) {
+					if(!columnMap.containsKey(requiredHeader)) {
+						throw new RuntimeException("Could not find column for \"" + requiredHeader + "\"");
+					}
+				}
+
+				final String localizedString = fields[columnMap.get("open_mod_localization")];
+				final boolean localizedBetter = fields[columnMap.get("localized_better")].equals("True");
+				final boolean deltaMassUsed = fields[columnMap.get("dm_used")].equals("True");
+
+				if(localizedBetter) {
+
+					// localized version scored better, add position to localization and adjust delta mass as necessary
+					AbstractMap.SimpleEntry<Integer, BigDecimal> modPair = getModFromReportedMod(
+							localizedString,
+							nakedPeptideSequence,
+							null
+					);
+
+					Integer modPosition = modPair.getKey();;
+					BigDecimal modMass = modPair.getValue();
+
+					// set the open mod mass and delta mass
+					if(deltaMassUsed) {
+						psm.setOpenModification(new OpenModification(deltaMass, modPosition));
+						psm.setDeltaMass(BigDecimal.ZERO);
+					} else {
+						psm.setOpenModification( new OpenModification(modMass, modPosition));
+						psm.setDeltaMass(psm.getDeltaMass().subtract(modMass));
+					}
+
+				} else {
+
+					// use the non-localized version since it scored better
+					psm.setOpenModification( new OpenModification(deltaMass, null));
+					psm.setDeltaMass(BigDecimal.ZERO);
+				}
+
+			} else {
+
+				// aScore localization wasn't performed
+				psm.setOpenModification( new OpenModification(deltaMass, null));
+				psm.setDeltaMass(BigDecimal.ZERO);
+			}
+		} else {
+			throw new RuntimeException("\"search_file\" must be \"narrow\" or \"open\"");
+		}
+
 	}
 
 	/**
@@ -249,7 +328,7 @@ public class ResultsParser {
 	 */
 	private static boolean isStaticMod(String nakedPeptideString, int position, BigDecimal mass, Map<String, BigDecimal> staticMods) {
 
-		if(staticMods.size() < 1) { return false; }
+		if(staticMods == null || staticMods.size() < 1) { return false; }
 
 		String residue = nakedPeptideString.substring(position - 1, position);
 		if(!staticMods.containsKey(residue)) { return false; }
