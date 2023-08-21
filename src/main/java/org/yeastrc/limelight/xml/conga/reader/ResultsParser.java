@@ -218,7 +218,7 @@ public class ResultsParser {
 						psm.setDeltaMass(BigDecimal.ZERO);
 					} else {
 						psm.setOpenModification( new OpenModification(modMass, modPosition));
-						psm.setDeltaMass(psm.getDeltaMass().subtract(modMass));
+						psm.setDeltaMass(deltaMass.subtract(modMass));
 					}
 
 				} else {
